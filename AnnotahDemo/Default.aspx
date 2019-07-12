@@ -5,18 +5,21 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header font-weight-bold">
-                Sample Heading
+                Vendor Currency Management
             </div>
             <div class="card-body">
                 <div class="form-inline input-group">
                     <div class="form-inline input-group">
                         <label for="po" class="mr-sm-2">PO Number:</label>
-                        <input type="text" class="form-control" id="po">
+                        <asp:TextBox runat="server" class="form-control" ID="po"></asp:TextBox>
                         <div class="input-group-append">
-                            <button class="btn btn-secondary" onclick="GetData();" type="button" data-toggle="modal" data-target="#myModal">
+                            <asp:LinkButton class="btn btn-secondary" runat="server" OnClick="GetPoDetails" OnClientClick="return checkpo();" >
                                 <i class="fa fa-search"></i>
-                            </button>
+                            </asp:LinkButton>
                         </div>
+                    </div>
+                    <div class="m-1">
+                        <a href="#" onclick="GetData();" data-toggle="modal" data-target="#myModal">Search PO</a>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -37,14 +40,15 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">PO NO.</th>
+                                <th scope="col">ITEM REF NO</th>
+                                <th scope="col">ITEM NAME</th>
+                                <th scope="col">PRICE</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <asp:PlaceHolder ID="DBDataPlaceHolder" runat="server"></asp:PlaceHolder>
+                            <%--<tr>
                                 <th scope="row">1</th>
                                 <td>Mark</td>
                                 <td>Otto</td>
@@ -61,7 +65,7 @@
                                 <td>Larry</td>
                                 <td>the Bird</td>
                                 <td>@twitter</td>
-                            </tr>
+                            </tr>--%>
                         </tbody>
                     </table>
                 </div>
@@ -131,11 +135,21 @@
             });
         }
 
+        function checkpo() {
+            var poval = document.getElementById("<%=po.ClientID%>");
+            if (poval.value == "") {
+                alert("PO Number Required!!");
+                poval.className = "border-danger";
+                return false;
+            } else
+                return true;
+        }
+
         $(document).on("click", "#id", function () {
             //alert("PO Number: " + $('.po' + $(this).attr('rownr') + '').text());
             var ponumber = $('.po' + $(this).attr('rownr') + '').text();
             $('#myModal').modal('hide');
-            $("#po").val(ponumber);
+            $("#<%=po.ClientID%>").val(ponumber);
         });
 
     </script>
